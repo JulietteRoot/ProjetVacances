@@ -1,0 +1,15 @@
+legend{
+    font-weight:bold;
+}
+
+#validation:hover{
+    color:green;
+    font-weight:bold;
+}
+
+#annulation:hover{
+    color:red;
+    font-weight:bold;
+}
+
+
