@@ -10,7 +10,7 @@ use \entity\Herbegement;
 use \entity\Villa;
 //use \entity\Client;
 //use \entity\Location;
-//use \entity\Service;
+use \entity\Service;
 use \entity\Cadre;
 
 class MysqlDao{
@@ -109,8 +109,8 @@ class MysqlDao{
                 $stmt2->execute();
                 $row2 = $stmt2->fetch(PDO::FETCH_ASSOC);
                 $etage = $row2['etage'];
-                $appartement = new Appartement($etage, $capacite, $tarifJour, $numero, $ville, $descriptif, $image, $cadre, $idHebergement);
-                return $appartement; // retourne l'objet appartement avec toutes les données et sort de la fonction
+                return $appartement = new Appartement($etage, $capacite, $tarifJour, $numero, $ville, $descriptif, $image, $cadre, $idHebergement);
+                // retourne l'objet appartement avec toutes les données et sort de la fonction
                 break;
             case 2:
                 $sql2 = "SELECT superficie_piscine FROM villa WHERE id=:id";
@@ -119,14 +119,31 @@ class MysqlDao{
                 $stmt2->execute();
                 $row2 = $stmt2->fetch(PDO::FETCH_ASSOC);
                 $surfacePiscine = $row2['superficie_piscine'];
-                $villa = new Villa($surfacePiscine, $capacite, $tarifJour, $numero, $ville, $descriptif, $image, $cadre, $idHebergement);
-                return $villa; // retourne l'objet $villa avec toutes les données et sort de la fonction
+                return $villa = new Villa($surfacePiscine, $capacite, $tarifJour, $numero, $ville, $descriptif, $image, $cadre, $idHebergement);
+                // retourne l'objet $villa avec toutes les données et sort de la fonction
                 break;
             default:
                 //header("location:/ProjetVacances/public/error.php"); // contexte de l'application
          } // fin switch
          throw new Exception("Erreur de récupération de l'hébergement");
      } // fin function
+     
+     public function getAllServicesInclusByHebergement($idHebergement){
+        $sql = "SELECT S.id, S.intitule, S.description, S.actif, S.tarif 
+            FROM service S, hebergement_services_inclus H 
+            WHERE H.fk_service=S.id AND H.fk_hebergement=:id";
+        $stmt = $this->dbh->prepare($sql);
+        $stmt->bindParam(":id", $idHebergement);
+        $stmt->execute();
+        $services = array();
+        while ($row = $stmt->fetch(PDO::FETCH_ASSOC)) {
+           $services[] = new Service(
+                   $row['intitule'], $row['description'], 
+                   $row['tarif'], $row['actif'], $row['id']
+                   );
+        }
+        return $services; // tableau de services
+     }
      
  }
 ?>
