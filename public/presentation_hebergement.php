@@ -12,9 +12,10 @@ if ( $hebergement instanceof Villa) {
 } elseif ($hebergement instanceof Appartement) {
     $type = 'appartement';
 } else {
-    $type = "autre";    
+    // On pourrait faire une fonction pour renvoyer une Exception ici...
+    header("location:/ProjetVacances/public/error.php"); 
 }
-var_dump($hebergement);
+//var_dump($hebergement);
 
 ?>
 <!DOCTYPE html>
@@ -25,13 +26,21 @@ var_dump($hebergement);
         <title></title>
     </head>
     <body>
-        <?php if(strcmp($type, "appartement") == 0): ?>
-            <h1>Appartement</h1>
-        <?php elseif(strcmp($type, "villa") == 0) : ?>
-            <h1>Villa</h1>
+        <?php if(strcmp($type, "appartement") == 0) : //alternative, pour comparer 2 chaines de caractères. Renvoie zéro si elles sont identiques ?>
+            <h1>Appartement à <?php echo $hebergement->getVille();?></h1>
+            <p><?php echo $hebergement->getDescriptif();?></p>
+            <p><?php echo "{$hebergement->getCapacite()}m², étage N°{$hebergement->getEtage()}, {$hebergement->getTarifJour()} € par jour" ?></p>
+            
         <?php else : ?>
-            <h1>Erreur ?</h1>
-        <?php endif; ?>        
-        
+            <h1>Villa à <?php echo $hebergement->getVille();?></h1>
+            <p><?php echo $hebergement->getDescriptif();?></p>
+            <p><?php echo "{$hebergement->getCapacite()}m², piscine de {$hebergement->getSurfacePiscine()}m2, {$hebergement->getTarifJour()} € par jour"; ?></p>
+        <?php endif; ?>
+            
+            <ul>Les services inclus sont :
+                <?php foreach ($_SESSION['services_inclus'] as $service): ?>
+                    <li><?php echo $service->getIntitule(); ?></li>
+                <?php endforeach; ?>
+            </ul>
     </body>
 </html>
