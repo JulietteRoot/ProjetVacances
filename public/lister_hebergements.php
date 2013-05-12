@@ -12,7 +12,7 @@ $villas = $_SESSION['villas'];
     <head>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
         <link href="css/style.css" rel="stylesheet">
-        <title></title>
+        <title>La liste des hébergements</title>
     </head>
     <body>
         

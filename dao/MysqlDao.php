@@ -142,7 +142,24 @@ class MysqlDao{
                    $row['tarif'], $row['actif'], $row['id']
                    );
         }
-        return $services; // tableau de services
+        return $services; // tableau de services (inclus)
+     }
+     
+     public function getAllServicesOptionnelsByHebergement($idHebergement){
+        $sql = "SELECT S.id, S.intitule, S.description, S.actif, S.tarif 
+            FROM service S, hebergement_services_options H 
+            WHERE H.fk_service=S.id AND H.fk_hebergement=:id";
+        $stmt = $this->dbh->prepare($sql);
+        $stmt->bindParam(":id", $idHebergement);
+        $stmt->execute();
+        $services = array();
+        while ($row = $stmt->fetch(PDO::FETCH_ASSOC)) {
+           $services[] = new Service(
+                   $row['intitule'], $row['description'], 
+                   $row['tarif'], $row['actif'], $row['id']
+                   );
+        }
+        return $services; // tableau de services (optionnels)
      }
      
  }

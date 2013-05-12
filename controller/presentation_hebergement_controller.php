@@ -14,7 +14,10 @@ try{
     $_SESSION['hebergement'] = $hebergement; // attention, peut-être soit un appartement, soit une villa
     
     $services_inclus = $dao->getAllServicesInclusByHebergement($idHebergement);
-    $_SESSION['services_inclus'] = $services_inclus;
+    $_SESSION['services_inclus'] = $services_inclus; // on pourrait regrouper sur une ligne
+    
+    $services_options = $dao->getAllServicesOptionnelsByHebergement($idHebergement);
+    $_SESSION['services_options'] = $services_options;
     
     header("location:/ProjetVacances/public/presentation_hebergement.php");// on pourrait utiliser une constante, mais il faudrait une constante avec le contexte de l'application
 

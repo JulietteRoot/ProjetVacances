@@ -3,6 +3,7 @@ include '../setup.php';
 
 use entity\Appartement;
 use entity\Villa;
+use entity\Service;
 
 session_start();
 
@@ -23,7 +24,7 @@ if ( $hebergement instanceof Villa) {
     <head>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
         <link href="css/style.css" rel="stylesheet">
-        <title></title>
+        <title>Présentation de l'hébergement choisi</title>
     </head>
     <body>
         <?php if(strcmp($type, "appartement") == 0) : //alternative, pour comparer 2 chaines de caractères. Renvoie zéro si elles sont identiques ?>
@@ -39,8 +40,28 @@ if ( $hebergement instanceof Villa) {
             
             <ul>Les services inclus sont :
                 <?php foreach ($_SESSION['services_inclus'] as $service): ?>
-                    <li><?php echo $service->getIntitule(); ?></li>
+                    <li><?php echo "{$service->getIntitule()}. {$service->getDescription()} pour {$service->getTarif()} €"; ?></li>
                 <?php endforeach; ?>
             </ul>
+            
+            <p>Vous pouvez choisir des services optionnels :</p>
+            <form action="#" method="POST">
+                <?php foreach ($_SESSION['services_options'] as $service): ?>
+                    <input type="checkbox" name="services[]" value="<?php echo $service->getIntitule() ?>"><?php echo "{$service->getIntitule()}. {$service->getDescription()} pour {$service->getTarif()} €"; ?><br>
+                <?php endforeach; ?>
+                <input id="validation" type="submit" value="valider"> <input id="annulation" type="reset" value="annuler">
+            </form>
+            
+            <?php // pour simple test, il faudrait faire les vérifs et renvoyer vers un controller puis une vue récapitulative
+            
+            if(isset($_POST['services']) && count($_POST['services']) != 0):?>
+            <ul>Vous avez choisi :
+            <?php
+            foreach($_POST['services'] as $service) {
+                echo "<li>$service</li>";
+            }
+            ?>
+            </ul>
+            <?php endif; ?>
     </body>
 </html>
