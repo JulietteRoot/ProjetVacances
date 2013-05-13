@@ -52,7 +52,7 @@ if ( $hebergement instanceof Villa) {
                 <input id="validation" type="submit" value="valider"> <input id="annulation" type="reset" value="annuler">
             </form>
             
-            <?php // pour simple test, il faudrait faire les vérifs et renvoyer vers un controller puis une vue récapitulative
+            <?php // ATTENTION, ci-dessous un simple test. Il faudrait normalement faire les vérifs et renvoyer vers un controller puis une vue récapitulative !!
             
             if(isset($_POST['services']) && count($_POST['services']) != 0):?>
             <ul>Vous avez choisi :
